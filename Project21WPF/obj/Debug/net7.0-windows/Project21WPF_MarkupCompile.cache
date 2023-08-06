@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET7_0;NETCOREAPP
 F:\C#\Project21WPFTest\Project21WPF\App.xaml
-6-1884424246
+6-983028844
 
-171047781271
-22150006869
-AddContactWindow.xaml;AuthenticateWindow.xaml;ChangeContactWindow.xaml;DetailsWindow.xaml;MainWindow.xaml;RegistrationWindow.xaml;
+8-1273024484
+222-25892187
+MainWindow.xaml;UI_Interface\AddContact\AddContactWindow.xaml;UI_Interface\Authenticate\AuthenticateWindow.xaml;UI_Interface\ChangeContact\ChangeContactWindow.xaml;UI_Interface\Details\DetailsWindow.xaml;UI_Interface\Registration\RegistrationWindow.xaml;
 
 False
 

@@ -1,9 +1,9 @@
 ﻿
 
-FF:\C#\Project21WPFTest\Project21WPF\AddContactWindow.xaml;;
-FF:\C#\Project21WPFTest\Project21WPF\AuthenticateWindow.xaml;;
-FF:\C#\Project21WPFTest\Project21WPF\ChangeContactWindow.xaml;;
-FF:\C#\Project21WPFTest\Project21WPF\DetailsWindow.xaml;;
 FF:\C#\Project21WPFTest\Project21WPF\MainWindow.xaml;;
-FF:\C#\Project21WPFTest\Project21WPF\RegistrationWindow.xaml;;
+FF:\C#\Project21WPFTest\Project21WPF\UI_Interface\AddContact\AddContactWindow.xaml;;
+FF:\C#\Project21WPFTest\Project21WPF\UI_Interface\Authenticate\AuthenticateWindow.xaml;;
+FF:\C#\Project21WPFTest\Project21WPF\UI_Interface\ChangeContact\ChangeContactWindow.xaml;;
+FF:\C#\Project21WPFTest\Project21WPF\UI_Interface\Details\DetailsWindow.xaml;;
+FF:\C#\Project21WPFTest\Project21WPF\UI_Interface\Registration\RegistrationWindow.xaml;;
 

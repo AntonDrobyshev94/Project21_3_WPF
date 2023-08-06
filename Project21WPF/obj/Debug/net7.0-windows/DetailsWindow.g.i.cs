@@ -125,7 +125,7 @@ namespace Project21WPF {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Project21WPF;component/detailswindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Project21WPF;V1.0.0.0;component/detailswindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\DetailsWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

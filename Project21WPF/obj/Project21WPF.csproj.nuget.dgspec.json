@@ -31,7 +31,11 @@
         "frameworks": {
           "net7.0-windows7.0": {
             "targetAlias": "net7.0-windows",
-            "projectReferences": {}
+            "projectReferences": {
+              "F:\\C#\\Project21WPFTest\\Project21WPF_ClassLibrary\\Project21WPF_ClassLibrary.csproj": {
+                "projectPath": "F:\\C#\\Project21WPFTest\\Project21WPF_ClassLibrary\\Project21WPF_ClassLibrary.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -54,7 +58,7 @@
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[6.21.0, )"
+              "version": "[6.32.1, )"
             }
           },
           "imports": [
@@ -78,6 +82,21 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
         }
+      }
+    },
+    "F:\\C#\\Project21WPFTest\\Project21WPF_ClassLibrary\\Project21WPF_ClassLibrary.csproj": {
+      "restore": {
+        "projectUniqueName": "F:\\C#\\Project21WPFTest\\Project21WPF_ClassLibrary\\Project21WPF_ClassLibrary.csproj",
+        "projectName": "Project21WPF_ClassLibrary",
+        "projectPath": "F:\\C#\\Project21WPFTest\\Project21WPF_ClassLibrary\\Project21WPF_ClassLibrary.csproj",
+        "frameworks": {
+          "net472": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {}
       }
     }
   }

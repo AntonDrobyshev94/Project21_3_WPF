@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Project21WPF_ClassLibrary;
+using Project21WPF_ClassLibrary.ContactModel;
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Project21WPF.UI_Interface.AddContact;
+using Project21WPF.UI_Interface.Details;
+using Project21WPF.UI_Interface.ChangeContact;
+using Project21WPF.UI_Interface.Authenticate;
 
 namespace Project21WPF
 {
@@ -27,56 +21,49 @@ namespace Project21WPF
             AccessCheckMethod();
             UserInformationMethod();
 
-            ContactDataApi context = new ContactDataApi();
+            ProjectLogic projectLogic = new ProjectLogic();
             try
             {
-                DataGridView.ItemsSource = context.GetContacts().ToObservableCollection();
+                DataGridView.ItemsSource = projectLogic.GetContactsMethod();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
 
-            RefreshButton.Click += delegate { DataGridView.ItemsSource = context.GetContacts().ToObservableCollection(); };
+            RefreshButton.Click += delegate { DataGridView.ItemsSource = projectLogic.GetContactsMethod(); };
             AddButton.Click += delegate
             {
-                if (context.CheckToken())
+                if (projectLogic.CheckTokenMethod())
                 {
-                    Contact contact = new Contact()
-                    {
-                        Name = "",
-                        Surname = "",
-                        FatherName = "",
-                        TelephoneNumber = "",
-                        ResidenceAdress = "",
-                        Description = ""
-                    };
+                    Contact contact = projectLogic.CreateNewContactMethod();
                     AddContactWindow addContactWindow = new AddContactWindow(contact);
                     addContactWindow.ShowDialog();
-
                     if (addContactWindow != null && addContactWindow.DialogResult.Value)
                     {
-                        context.AddContacts(contact);
-                        DataGridView.ItemsSource = context.GetContacts().ToObservableCollection();
+                        projectLogic.AddContacts(contact);
+                        DataGridView.ItemsSource = projectLogic.GetContactsMethod();
                     }
                 }
                 else
                 {
                     MessageBox.Show("Токен не валидный");
-                    ExitMethod();
+                    AuthenticateWindow authenticateWindow = new AuthenticateWindow(projectLogic.ExitMethod());
+                    this.Close();
                 }
                 
             };
 
             DeleteButton.Click += delegate
             {
-                if(context.CheckToken())
+                if (projectLogic.CheckTokenMethod())
                 {
                     if ((Contact)DataGridView.SelectedItem != null)
                     {
                         contactHighlight = (Contact)DataGridView.SelectedItem;
-                        context.DeleteContact(contactHighlight.ID);
-                        DataGridView.ItemsSource = context.GetContacts().ToObservableCollection();
+                        projectLogic.DeleteContactMethod(contactHighlight.ID);
+                        DataGridView.Items.Refresh();
+                        DataGridView.ItemsSource = projectLogic.GetContactsMethod();
                         DataGridView.Items.Refresh();
                     }
                     else
@@ -87,27 +74,20 @@ namespace Project21WPF
                 else
                 {
                     MessageBox.Show("Токен не валидный");
-                    ExitMethod();
+                    AuthenticateWindow authenticateWindow = new AuthenticateWindow(projectLogic.ExitMethod());
+                    this.Close();
                 }
             };
 
             DetailsButton.Click += delegate
             {
-                if (context.CheckToken())
+                if (projectLogic.CheckTokenMethod())
                 {
                     if ((Contact)DataGridView.SelectedItem != null)
                     {
                         contactHighlight = (Contact)DataGridView.SelectedItem;
-                        Contact contact = new Contact()
-                        {
-                            Name = "",
-                            Surname = "",
-                            FatherName = "",
-                            TelephoneNumber = "",
-                            ResidenceAdress = "",
-                            Description = ""
-                        };
-                        contact = context.FindContactById(contactHighlight.ID);
+                        Contact contact = projectLogic.CreateNewContactMethod();
+                        contact = projectLogic.FindContactByIdMethod(contactHighlight.ID);
                         DetailsWindow detailsWindow = new DetailsWindow(contact);
                         detailsWindow.ShowDialog();
                     }
@@ -119,14 +99,14 @@ namespace Project21WPF
                 else
                 {
                     MessageBox.Show("Токен не валидный");
-                    ExitMethod();
+                    AuthenticateWindow authenticateWindow = new AuthenticateWindow(projectLogic.ExitMethod());
+                    this.Close();
                 }
-                
             };
 
             ContactChangeButton.Click += delegate
             {
-                if (context.CheckToken())
+                if (projectLogic.CheckTokenMethod())
                 {
                     if ((Contact)DataGridView.SelectedItem != null)
                     {
@@ -146,11 +126,11 @@ namespace Project21WPF
                             changeContactWindow.ShowDialog();
                             if (changeContactWindow.DialogResult.Value)
                             {
-                                context.ChangeContact(contact.Name, contact.Surname,
-                                    contact.FatherName, contact.TelephoneNumber,
-                                    contact.ResidenceAdress, contact.Description,
-                                    contactHighlight.ID);
-                                DataGridView.ItemsSource = context.GetContacts().ToObservableCollection();
+                                projectLogic.ChangeContactMethod(contact.Name, contact.Surname,
+                                contact.FatherName, contact.TelephoneNumber, contact.ResidenceAdress, 
+                                contact.Description, contactHighlight.ID);
+                                DataGridView.Items.Refresh();
+                                DataGridView.ItemsSource = projectLogic.GetContactsMethod();
                                 DataGridView.Items.Refresh();
                             }
                         }
@@ -167,30 +147,27 @@ namespace Project21WPF
                 else
                 {
                     MessageBox.Show("Токен не валидный");
-                    ExitMethod();
+                    AuthenticateWindow authenticateWindow = new AuthenticateWindow(projectLogic.ExitMethod());
+                    this.Close();
                 }
-                
             };
             ExitButton.Click += delegate
             {
-                ExitMethod();
+                AuthenticateWindow authenticateWindow = new AuthenticateWindow(projectLogic.ExitMethod());
+                authenticateWindow.Show();
+                this.Close();
             };
         }
 
-        private void ExitMethod()
-        {
-            GlobalVariables.token = string.Empty;
-            GlobalVariables.userRole = string.Empty;
-            GlobalVariables.userName = string.Empty;
-            ContactDataApi contactDataApi = new ContactDataApi();
-            AuthenticateWindow authenticateWindow = new AuthenticateWindow(contactDataApi);
-            authenticateWindow.Show();
-            this.Close();
-        }
-
+        /// <summary>
+        /// Метод проверки прав доступа, в котором в зависимости от 
+        /// возвращаемой логической переменной открывается или
+        /// закрывается видимость элементов UI.
+        /// </summary>
         private void AccessCheckMethod()
         {
-            if (GlobalVariables.userRole == "Admin")
+            ProjectLogic projectLogic = new ProjectLogic();
+            if (projectLogic.UserRoleAccessInformation())
             {
                 DeleteButton.Visibility = Visibility.Visible;
                 ContactChangeButton.Visibility = Visibility.Visible;
@@ -202,10 +179,15 @@ namespace Project21WPF
             }
         }
 
+        /// <summary>
+        /// Метод предоставления информации о пользователях, в
+        /// котором происходит вывод информации на UI.
+        /// </summary>
         private void UserInformationMethod()
         {
-            UserName.Text = $"Добро пожаловать, {GlobalVariables.userName}";
-            if (GlobalVariables.userRole == "Admin")
+            ProjectLogic projectLogic = new ProjectLogic();
+            UserName.Text = projectLogic.UserNameInformation();
+            if(projectLogic.UserRoleAccessInformation())
             {
                 UserRole.Text = $"У Вас права администратора";
             }
